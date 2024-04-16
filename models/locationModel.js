@@ -15,6 +15,10 @@ const locationSchema = new mongoose.Schema({
     longitude: {
         type: Number,
         required: [true, 'Please provide longitude'],
+    },
+    formattedAddress: {
+        type: String,
+        default: 'No Value',
     }
 });
 
