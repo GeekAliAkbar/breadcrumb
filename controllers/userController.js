@@ -72,7 +72,26 @@ exports.getUserById = catchAsync (async (req, res, next) => {
 });
 
 exports.getUser = factory.getOne(User);
-exports.updateUser = factory.updateOne(User);
+exports.updateUser = catchAsync (async (req, res, next) => {
+    let queryObj = {
+        userId: req.params.id,
+    };
+    const user = await User.find(queryObj);
+    if (!user) {
+        return next(new AppError ('No document find with that ID', 404))
+    }
+    if (req.body?.password) {
+        user[0].password = user[0].confirmPassword = req.body.password;
+    }
+    const password = await bcrypt.hash(user[0].password, 12);
+    console.log(password);
+    res.status(200).json({
+        status: 'success',
+        data: {
+            data: user,
+        }
+    })
+});
 exports.deleteUser = factory.deleteOne(User);
 
 exports.getMe = (req, res, next) => {

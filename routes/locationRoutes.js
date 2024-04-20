@@ -10,11 +10,14 @@ router.route('/')
     // .post(locationController.addLocation);
 
 router.route('/:id')
-    .get(locationController.getLocationById)
+    // .get(locationController.getLocationById)
     .patch(locationController.updateLocation)
     .delete(authController.protect, authController.restrtictTo('admin', 'hr'), locationController.deleteLocation);
 
 router.route('/:userId')
     .patch(locationController.getLocationByUserId);
+
+router.route('/getFilteredLocations')
+    .post(authController.protect, authController.restrtictTo('admin'), locationController.getFilteredLocations);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const authController = require('./../controllers/authController');
 const router = express.Router();
 
 router.route('/')
-    // .get(authController.protect, attendanceController.getAttendanceByUserId)
+    .get(authController.protect, authController.restrtictTo('admin'), attendanceController.getAllAttendances)
     .post(authController.protect, attendanceController.addAttendance);
 
 router.route('/getmyattendance')

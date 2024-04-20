@@ -59,12 +59,31 @@ exports.addLocation =  catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getLocationById = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'this route is not yet defined'
+exports.getFilteredLocations = catchAsync(async (req, res, next) => {
+    let queryObj = { };
+    if (req.body.userId) {
+        queryObj = {
+            userId: req.body.userId,
+        }
+    }
+    if (req.body.from && req.body.to) {
+        queryObj = {
+            ...queryObj,
+            locationTagTiming: {
+                $gte: new Date(req.body.from), 
+                $lt: new Date(req.body.to)
+            }
+        }
+    }
+    const locations = await Location.find(queryObj);
+    res.status(200).json({
+        status: 'success',
+        results: locations.length,
+        data: {
+            locations,
+        }
     })
-}
+});
 
 exports.updateLocation = (req, res) => {
     res.status(500).json({
