@@ -11,6 +11,9 @@ router.route('/')
 router.route('/getmyattendance')
     .post(authController.protect, attendanceController.getMyAttendance)
 
+router.route('/getAttendanceByUserId')
+    .post(authController.protect, authController.restrtictTo('admin'), attendanceController.getAttendanceByUserId)
+
 router.route('/:id')
     .get()
     .patch()

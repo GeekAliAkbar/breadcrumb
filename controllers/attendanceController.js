@@ -13,6 +13,23 @@ exports.getAllAttendances = catchAsync (async (req, res, next) => {
     })
 });
 
+exports.getAttendanceByUserId = catchAsync (async (req, res, next) => {
+    let queryObj = { };
+    if (req.body.userId) {
+        queryObj = {
+            userId: req.body.userId,
+        }
+    }
+    const attendances = await Attendance.find(queryObj);
+    res.status(200).json({
+        status: 'success',
+        results: attendances.length,
+        data: {
+            attendances,
+        }
+    })
+});
+
 exports.addAttendance =  catchAsync(async (req, res, next) => {
     const attendanceObject = req.body;
     console.log(req.body);
@@ -20,6 +37,8 @@ exports.addAttendance =  catchAsync(async (req, res, next) => {
         userId: req.user[0].userId,
         attendenceTiming: new Date(),
         activity: attendanceObject.activity,
+        latitude: attendanceObject.latitude,
+        longitude: attendanceObject.longitude,
     });
     res.status(201).json({
         status: 'success',

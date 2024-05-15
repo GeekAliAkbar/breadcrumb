@@ -13,7 +13,13 @@ const attendanceSchema = new mongoose.Schema({
         type: String,
         enum: ['start', 'stop'],
         required: [true, 'Please provide activity'],
-    }
+    },
+    latitude: {
+        type: Number,
+    },
+    longitude: {
+        type: Number,
+    },
 });
 
 const Attendance = mongoose.model('Attendance', attendanceSchema);
